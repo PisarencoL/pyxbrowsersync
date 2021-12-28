@@ -5,6 +5,7 @@ from flask import Flask, request
 import sqlite3
 import uuid
 import datetime
+from pathlib import Path
 
 app = Flask(__name__)
 
@@ -14,6 +15,8 @@ DB_LOCATION = "data/bookmarks.db"
 @contextmanager
 def db_connect():
     try:
+        db_file = Path(DB_LOCATION)
+        db_file.parent.mkdir(exist_ok=True, parents=True)
         connection = sqlite3.connect(DB_LOCATION)
         cursor = connection.cursor()
         yield connection, cursor
